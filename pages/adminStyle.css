@@ -1,0 +1,64 @@
+body {  
+    background-image: url('https://img.freepik.com/free-vector/white-background-with-hexagonal-line-pattern-design_1017-28442.jpg?size=626&ext=jpg&ga=GA1.1.1398998428.1683035017&semt=robertav1_2_sidr');
+    background-size: 100%;
+    background-position: left top;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+#header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top:0px;
+    height:180px;
+    width: 100%;
+    background:rgba(149, 147, 147, 0.686);
+  }
+
+h1 {
+    color: white;
+    font-size: 50px;
+  }
+
+.div_main {
+    padding-left: 15px;
+    margin-left: 100px;
+    display: flex;
+    justify-content: space-between;
+    height: 600px;
+    width: 90%;
+    background-color:transparent;
+}
+
+.div_main > div{
+  border-left: 2px gray solid;
+  margin-top: 15px;
+}
+
+#butons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+}
+
+button{
+  margin: 20px;
+  font-size: 15px;
+  height: 50px;
+  width: 300px;
+  background-color: rgb(40, 152, 221);
+  color: rgb(241, 240, 238);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover{
+  transform: scale(1.11);
+}
+img{
+    height: 330px;
+    width: 550px;
+    margin-top: 300px;
+    margin-right: 200px;
+  }

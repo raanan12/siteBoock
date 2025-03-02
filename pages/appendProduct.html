@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='secondStyle.css'>
+</head>
+<body>
+  <div id="header">
+    <h1 id="title">Sv-shop</h1>
+  </div>
+  <div class="div_main">
+    <form method="post" action="/productNew">
+      <h1>הוספת מוצר</h1>
+      <div>
+        <p>כיתה</p>
+        <select name="class" id="">
+          <option value="א">כיתה א</option>
+          <option value="ב">כיתה ב</option>
+          <option value="ג">כיתה ג</option>
+          <option value="ד">כיתה ד</option>
+          <option value="ה">כיתה ה</option>
+          <option value="ו">כיתה ו</option>
+          <option value="ז">כיתה ז</option>
+          <option value="ח">כיתה ח</option>
+        </select>
+      </div>
+
+      <div>
+        <p>בית ספר</p>
+        <select name="scool" id="">
+          <option value="boys">ארץ המוריה בנים</option>
+          <option value="girls">ארץ המוריה בנות</option>
+        </select>
+
+      </div>
+
+      <p>שם מוצר</p>
+      <input dir="rtl" name="name" id="nameUser" type="text" placeholder="שם מוצר" minlength="2" required>
+      <p>מחיר</p>
+      <input dir="rtl" name="price" id="emailUser" type="number" placeholder="מחיר" required>
+      <p>הוספת תמונה</p>
+      <input name="img" id="passwordUser" type="text" placeholder="img"  required>
+      <div id="send">
+        <select oninput="new1()" name="newA" id="newA" dir="rtl">
+          <option value="">בחר מצב מוצר</option>
+          <option value='true'>חדש</option>
+          <option value="false">יד שניה</option>
+        </select>
+        <input type="number" name="num" dir="rtl" id="stutus">
+        
+        <input type="submit" class="btn" id="btn_second" value="append">
+      </div>
+    </form>
+    <img src="https://cdn.pixabay.com/photo/2017/06/25/14/30/responsive-2440940_960_720.png" alt="">
+  </div>
+  <script src='append.js'></script>
+</body>
+</html>

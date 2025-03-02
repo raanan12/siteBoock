@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+      body{
+           direction: rtl;
+      }
+
+      #ProductsOrder {
+            width: 100%; /* אפשר להתאים לפי הצורך */
+            height: 280px; /* גובה קבוע */
+            overflow-y: auto; /* גלילה אנכית בעת הצורך */
+        }
+  </style>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Page Title</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel='stylesheet' type='text/css' media='screen' href='fifthStyle.css'>
+  <script src="fifthScript.js"></script>
+</head>
+
+<body>
+  <div id="header">
+    <h1 id="title">Sv-shop</h1>
+  </div>
+  <div id="main">
+    <div id="OrderList">
+
+    </div>
+    <div id="orderPreview">
+
+      <div id="part1">
+        <p class="little-title">שם מזמין: <span id="clientName"></span> </p>
+        <p class="little-title" id="titleProduct">רשימת ספרים: </p>
+        <div id="ProductsOrder"></div>
+      </div>
+
+      <div id="part2">
+        <p class="little-title" id="price">סך הכל לתשלום: <span id="totalPaid"></span></p>
+        <div id="delete"></div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
