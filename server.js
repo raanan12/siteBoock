@@ -354,115 +354,35 @@ app.get('/usersXL', async (req, res) => {
 
 
 app.get('/pendingXL', async (req, res) => {
-    const workbook = new ExcelJS.Workbook();
     const arrPending = await collectionPending.find();
-    let sum = 1;
+    console.log(arrPending)
+    const workBook = new ExcelJS.Workbook()
+    const worksheet = workBook.addWorksheet()
+    worksheet.views = [{ rightToLeft: true }];
+    let arrToFile = [['שם פרטי','פאלפון']]
+
     arrPending.forEach((val) => {
-        const worksheet = workbook.addWorksheet(`Sheet${sum}`);
-        // הגדרת כיוון הטבלה כמימין לשמאל
-        worksheet.views = [{ rightToLeft: true }];
+        arrToFile.push([val.userName,val.userFone])
+        val.arrProducts.forEach((val)=>{
+            arrToFile.push([val.productName,val.cunt2])
+        })
+        console.log(val.arrProducts);
         
-        let arrToFile = [];
-        arrToFile.push([':שם', val.userName], [' פאלפון :', val.userFon], ['', 'רשימת ספרים', 'כמות']);
-        let totalPrice = val.totulPrice;
-        let class1 = [[],[],[],[],[],[],[],[]]
-        let arrScoolB = val.arrProducts.filter((val)=>val.scool == 'boys') 
-        arrToFile.push(['בנים'])
-        arrScoolB.forEach((val)=>{
-            if(val.class == 'א') class1[0].push(val)
-            else if (val.class == 'ב') class1[1].push(val)
-            else if (val.class == 'ג') class1[2].push(val)
-            else if (val.class == 'ד') class1[3].push(val)
-            else if (val.class == 'ה') class1[4].push(val)
-            else if (val.class == 'ו') class1[5].push(val)
-            else if (val.class == 'ז') class1[6].push(val)
-            else if (val.class == 'ח') class1[7].push(val)
-        })
-        let arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-        let sum1 = 0
-        class1 = class1.map((val)=>{
-            val = val.sort((a,b)=>a.index-b.index)
-            let val2 = val.map((value)=>{
-                return ["",value.productName,value.cunt2]
-            })
-            val2.unshift(arr4[sum1])
-            sum1++
-            return val2
-        })
-        class1.forEach((val)=>{
-            if(val.length>1){
-                val.forEach((val)=>{
-                    arrToFile.push(val)
-                })
-            }
-        })
+    })
 
-        
-
-        class1 = [[],[],[],[],[],[],[],[]]
-        arrScoolB = val.arrProducts.filter((val)=>val.scool == 'girls') 
-        arrToFile.push(['בנות'])
-        arrScoolB.forEach((val)=>{
-            if(val.class == 'א') class1[0].push(val)
-            else if (val.class == 'ב') class1[1].push(val)
-            else if (val.class == 'ג') class1[2].push(val)
-            else if (val.class == 'ד') class1[3].push(val)
-            else if (val.class == 'ה') class1[4].push(val)
-            else if (val.class == 'ו') class1[5].push(val)
-            else if (val.class == 'ז') class1[6].push(val)
-            else if (val.class == 'ח') class1[7].push(val)
-        })
-        arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-        sum1 = 0
-        class1 = class1.map((val)=>{
-            val = val.sort((a,b)=>a.index-b.index)
-            let val2 = val.map((value)=>{
-                return ["",value.productName,value.cunt2]
-            })
-            val2.unshift(arr4[sum1])
-            sum1++
-            return val2
-        })
-        class1.forEach((val)=>{
-            if(val.length>1){
-                val.forEach((val)=>{
-                    arrToFile.push(val)
-                })
-            }
-        })
-        arrToFile.push(['מחיר סופי:', totalPrice]);
-
-        arrToFile.forEach((row) => {
-            worksheet.addRow(row);
-        });
-
-        // עיצוב התיבות בקוץ
-        let arr2 = ['A1', 'A2', `A${val.arrProducts.length + 3}`, 'B3', 'C3']
-        arr2.forEach((val) => {
-            const box = worksheet.getCell(val);
-
-            // עיצוב התיבה
-            box.border = {
-                bottom: { style: 'thick' },
-            };
-
-            // צבע הגבולות
-            box.border.color = 'black'
-        })
-        let box = worksheet.getCell('B2')
-        box.font = {
-            size: 9, // גודל הטקסט בפיקסלים
-        };
-
-
-        sum++;
+    arrToFile.forEach((row) => {
+        worksheet.addRow(row);
     });
+    worksheet.getColumn('C').width = 20;
+    worksheet.getColumn('A').width = 12;
+    worksheet.getColumn('B').width = 12;
+    worksheet.getColumn('D').width = 12;
+    const buffer = await workBook.xlsx.writeBuffer();
 
-    const buffer = await workbook.xlsx.writeBuffer();
-
-    res.setHeader('Content-Disposition', 'attachment; filename=pending.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=users.xlsx');
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.send(buffer);
+
 });
 
 
