@@ -359,12 +359,12 @@ app.get('/pendingXL', async (req, res) => {
     const workBook = new ExcelJS.Workbook()
     const worksheet = workBook.addWorksheet()
     worksheet.views = [{ rightToLeft: true }];
-    let arrToFile = [['שם פרטי','פאלפון']]
+    let arrToFile = [['שם פרטי','פאלפון','כמות']]
 
     arrPending.forEach((val) => {
-        arrToFile.push([val.userName,val.userFone])
+        arrToFile.push([val.userName,val.userFon])
         val.arrProducts.forEach((val)=>{
-            arrToFile.push([val.productName,val.cunt2])
+            arrToFile.push([val.productName,'',val.cunt2])
         })
         console.log(val.arrProducts);
         
