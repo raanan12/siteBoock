@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 
 
 // Connect to MongoDb
-db.connect('mongodb+srv://ranan97531:2524097531R@cluster0.rhkco4m.mongodb.net/booc')
+db.connect('mongodb+srv://ranan97531:2524097531R@cluster0.rhkco4m.mongodb.net/mosheFruits')
     .then(() => console.log('db on'))
 
 
@@ -40,7 +40,6 @@ const listProduct = db.Schema({
     productImg: String,
     amount: Number,
     type: Boolean,
-    scool: String,
     index: Number
 })
 
@@ -196,21 +195,13 @@ app.get('/getAllProducts', (req, res) => {
 
 app.get('/getProducts', (req, res) => {
     const returnProductList = async () => {
-        let arr = await collectionProduct.find({ scool: 'boys' })
+        let arr = await collectionProduct.find()
         res.send({ arrp: arr })
     }
 
     returnProductList()
 })
 
-app.get('/getProductsGirls', (req, res) => {
-    const returnProductList = async () => {
-        let arr = await collectionProduct.find({ scool: 'girls' })
-        res.send({ arrp: arr })
-    }
-
-    returnProductList()
-})
 // Takes the order's name and the products and enters
 // it into the orders Collection
 app.post('/approve123', (req, res) => {

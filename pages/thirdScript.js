@@ -8,7 +8,9 @@ let ArrProducts = []
 // product name, product price and product img.
 const newDiv = (name, price,imgUrl,class5,scool,indexProdu,index,) => {
   let div = document.createElement('div');
-  let div1 = document.createElement('div');
+  let addAndRamoveProduct = document.createElement('div');
+  let div2 = document.createElement('div');
+  let div3 = document.createElement('div');
   let h1 = document.createElement('h1');
   let p = document.createElement('p');
   let sum = document.createElement('p');
@@ -16,7 +18,9 @@ const newDiv = (name, price,imgUrl,class5,scool,indexProdu,index,) => {
   let btn1 = document.createElement('button');
   let btn2 = document.createElement('button');
   sum.innerHTML = ArrProducts[index].cunt2;
-  console.log(ArrProducts[index]);
+  // console.log(ArrProducts[index]);
+  console.log(imgUrl);
+  
 
   // Function that adds a product to the selected products array
   btn1.addEventListener('click',()=>{
@@ -102,13 +106,15 @@ const newDiv = (name, price,imgUrl,class5,scool,indexProdu,index,) => {
     }
   })
   btn1.innerHTML = '+';
-  btn2.innerHTML = '-'
-  div1.setAttribute('id','addAremove')
-  div1.append(btn1,sum,btn2)
+  btn2.innerHTML = '-';
+  addAndRamoveProduct.setAttribute('id','addAremove')
+  addAndRamoveProduct.append(btn1,sum,btn2)
   h1.innerHTML = name
   p.innerHTML = `מחיר : ${price} ₪`
   img.src = imgUrl
-  div.append(img,h1, p,div1);
+  div2.append(h1, p,addAndRamoveProduct);
+  // div3.append(div2,div1)
+  div.append(div2,img)
   div.setAttribute('class','product');
   document.getElementById('products').append(div)
 }
@@ -117,9 +123,8 @@ const newDiv = (name, price,imgUrl,class5,scool,indexProdu,index,) => {
 
 // The fetch request is a request to the server that gets back from the server
 // all product existed.  
-let url2 = sessionStorage.getItem('scool')
-console.log(url2);
-fetch(url2)
+
+fetch('/getProducts')
   .then(res => res.json())
   .then((data) => {
     ArrProducts = data.arrp  

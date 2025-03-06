@@ -41,7 +41,7 @@ const transferPage = () => {
             localStorage.setItem('fon', fon)
             let chosenProducts = [];
             localStorage.setItem('chosenProducts', JSON.stringify(chosenProducts));
-            location.href = '/scool'
+            location.href = '/products'
           }
           else {
             alert('אינך רשום עדין להרשמה לחצו על כפטור  "הרשמה" בתחתית המסך')
@@ -109,7 +109,7 @@ const transferPage = () => {
             localStorage.setItem('fon', fon)
             let chosenProducts = [];
             localStorage.setItem('chosenProducts', JSON.stringify(chosenProducts));
-            location.href = '/scool'
+            location.href = '/products'
           }
           else {
             alert('המשתמש קיים כבר במערכת אתה מוזמן להתחבר מעמוד ההתחברות ')
