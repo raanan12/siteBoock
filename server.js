@@ -802,6 +802,8 @@ const constantFunction = () => {
     });
 }
 
+constantFunction()
+
 // createManger()
 
 app.listen(3000, () => console.log('server port on 3000'))
