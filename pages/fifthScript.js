@@ -1,6 +1,10 @@
 // Global Variable for order array.
 let ArrOrders = []
 
+const today = new Date();
+const dayOfWeek = today.getDay(); 
+
+
 
 // Function that produce new Divs for order of products.
 const newDiv = (name, arr, orderNumber) => {
@@ -92,6 +96,9 @@ const remove =(obj)=>{
 
   
 }
+
+// if(dayOfWeek)
+
 
 // Recieving the array of orders from the server.
 fetch('/Order')

@@ -91,6 +91,7 @@
   #part1{
     height: 90%;
   }
+  
   #part2{
     display: flex;
     justify-content: space-between;

@@ -54,3 +54,42 @@ const allbooc = ()=>{
             console.log(err);
         })
 }
+
+const openSaleF = ()=>{
+    fetch('/openSaleManger', {
+        headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+        method: 'post',
+        body: JSON.stringify({
+            openSale:true
+        })
+      })
+      .then((res)=>res.json())
+      .then((data)=>{
+        console.log(data);
+        
+        if(data == true){
+            alert('המכירה נפתחה')
+        }
+      })
+      .catch((err)=>{console.log(err);
+      })
+}
+
+
+const closeSaleF = ()=>{
+    fetch('/closeSaleManger', {
+        headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
+        method: 'post',
+        body: JSON.stringify({
+            openSale:false
+        })
+      })
+      .then((res)=>res.json())
+      .then((data)=>{
+        if(data == true){
+            alert('המכירה נסגרה')
+        }
+      })
+      .catch((err)=>{console.log(err);
+      })
+}

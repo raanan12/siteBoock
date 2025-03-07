@@ -9,6 +9,8 @@ const fs = require('fs');
 const http = require('http');
 const workbook = require('excel4node/distribution/lib/workbook');
 const path = require('path');
+const cron = require('node-cron');
+
 
 
 
@@ -54,7 +56,8 @@ const ordersPending = db.Schema({
 const manger = db.Schema({
     title:String,
     terms:String,
-
+    openSale:Boolean,
+    orderConstant:Array
 })
 
 const collectionUser = db.model('user', userSchema);
@@ -738,6 +741,27 @@ app.post('/myPading', async (req, res) => {
     }
 });
 
+app.get('/getManger', async (req,res) =>{
+    let manger = await collectionMenger.find()
+    res.json(manger[0])
+})
+
+app.post('/openSaleManger', async (req,res)=>{
+
+    let openSale = req.body.openSale;
+    let manger = await collectionMenger.findOneAndUpdate({_id:'67ca33e52dc7f37c72ca4ceb'},{$set:{openSale}})
+    res.json(true)
+    
+})
+
+
+app.post('/closeSaleManger', async (req,res)=>{
+    let openSale = req.body.openSale;
+    let manger = await collectionMenger.findOneAndUpdate({_id:'67ca33e52dc7f37c72ca4ceb'},{$set:{openSale}})
+    res.json(true)
+    
+})
+
 const getUsrer = async ()=>{
     let user= await collectionUser.findOne({userEmail:'ranan97531@gmail.com'})
     console.log(user);
@@ -752,6 +776,33 @@ const checkP = async () =>{
         }
     })
 }
+
+const createManger = async () =>{
+
+    let objManger = {
+        title:'',
+        terms:'',
+        openSale:false,
+        orderConstant:[]
+    }
+
+    await collectionMenger.insertMany(objManger)
+}
+
+
+const constantFunction = () => {
+    cron.schedule('0 11 * * 5', async () => {
+        let res = await collectionPending.deleteMany({})
+        let manger = await collectionMenger.find()
+        if(manger[0].orderConstant.length > 0){
+            await collectionPending.insertMany(manger[0].orderConstant)
+        }
+    }, {
+        timezone: "Asia/Jerusalem" // קובע את הזמן לפי ישראל
+    });
+}
+
+// createManger()
 
 app.listen(3000, () => console.log('server port on 3000'))
 

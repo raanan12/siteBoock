@@ -1,5 +1,6 @@
 // Third Page
 
+
 // Global variable of an array that saves the selected product inside
 let chosenProducts = JSON.parse(localStorage.getItem('chosenProducts'));
 let ArrProducts = []
@@ -120,57 +121,100 @@ const newDiv = (name, price,imgUrl,class5,scool,indexProdu,index,) => {
 }
 
 
+// closeing the sale after the Wednesday
 
-// The fetch request is a request to the server that gets back from the server
-// all product existed.  
 
-fetch('/getProducts')
-  .then(res => res.json())
-  .then((data) => {
-    ArrProducts = data.arrp  
-    
-    // forEach loop that goes throuh the array of products recieved from the
-    // server and enters each product into a new div, which generates
-    // a div for each product itself.
-    document.getElementById('userName').innerHTML = localStorage.getItem('user')
-    ArrProducts = ArrProducts.map((val)=>{
-      if(val.type == false && val.amount < 1){
+const openSaleF = async ()=>{
 
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const hour = today.getHours()
+  let manger = false;
+
+
+  await fetch('/getManger')
+  .then((res)=>res.json())
+  .then((data)=>{
+        console.log(data);
+        manger =  data.openSale
+        console.log(data.openSale);
+  
+      })
+  .catch((err)=>{
+        console.log(err);
+  
+      })
+
+
+      if(dayOfWeek === 2 || (dayOfWeek === 3 && hour < 11) || manger == true){
+        // The fetch request is a request to the server that gets back from the server
+        // all product existed. 
+        fetch('/getProducts')
+        .then(res => res.json())
+        .then((data) => {
+          ArrProducts = data.arrp  
+          
+          // forEach loop that goes throuh the array of products recieved from the
+          // server and enters each product into a new div, which generates
+          // a div for each product itself.
+          document.getElementById('userName').innerHTML = localStorage.getItem('user')
+          ArrProducts = ArrProducts.map((val)=>{
+            if(val.type == false && val.amount < 1){
+      
+            }
+            else{
+              let booli = false
+              let booc = ''
+              chosenProducts.forEach((value)=>{
+                if(value.class == val.class && value.scool == val.scool && value.productName  == val.productName){
+                  val['cunt2'] =  value.cunt2
+                  console.log('ok');
+                  booli = true
+                  booc =  val    
+                }
+              })
+              if(booli == false){
+                console.log('a');
+                val['cunt2'] =  0
+                return val
+              }
+              else{
+                return booc
+              }
+              console.log(val);
+            }
+          })
+          ArrProducts.forEach((val,index) => {
+            try{
+              newDiv(val.productName, val.productPrice,val.productImg,val.class,val.scool,val.index,index)
+            }
+            catch{
+              
+            }
+          })
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      
       }
       else{
-        let booli = false
-        let booc = ''
-        chosenProducts.forEach((value)=>{
-          if(value.class == val.class && value.scool == val.scool && value.productName  == val.productName){
-            val['cunt2'] =  value.cunt2
-            console.log('ok');
-            booli = true
-            booc =  val    
-          }
-        })
-        if(booli == false){
-          console.log('a');
-          val['cunt2'] =  0
-          return val
-        }
-        else{
-          return booc
-        }
-        console.log(val);
+        let h1 = document.createElement('h1');
+        h1.innerHTML = 'המכירה תפתח ביום שלישי'
+        document.getElementById('products').append(h1)  
       }
-    })
-    ArrProducts.forEach((val,index) => {
-      try{
-        newDiv(val.productName, val.productPrice,val.productImg,val.class,val.scool,val.index,index)
-      }
-      catch{
-        
-      }
-    })
-  })
-  .catch((err) => {
-    console.log(err);
-  })
+
+}
+
+openSaleF()
+
+
+
+
+ 
+
+
+
 
 
 // The function for the Sort button, the function outputs the value selected
