@@ -1,7 +1,5 @@
 body {  
-    background-image: url('back5.png');
-    background-size: 3000%;
-    background-position: left top;
+    background: linear-gradient(to right, #d4f3d2, #a8e6cf);
     font-family: Arial, Helvetica, sans-serif;
     text-shadow: 1px 2px 2px rgb(198, 198, 198);
   }
@@ -50,12 +48,14 @@ body {
     
     #div_sort {
       display:flex;
-      justify-content:space-between;
       margin-top: 15px;
       border-bottom: 2px solid rgb(129, 124, 124);
       padding-bottom: 15px;
+      width: 100%;
       direction: rtl;
+      justify-content: space-between;
     }
+
     
     
     #header {
@@ -64,9 +64,8 @@ body {
       flex-direction:column;
       align-items: center;
       padding-top:50px ;
-      height:300px;
+      height:250px;
       width: 100%;
-      background:rgba(149, 147, 147, 0.686);
     }
     
     #header > div:first-child{
@@ -121,7 +120,7 @@ body {
       height: 45px;
       width: 170px;
       margin-right: 15px;
-      background-color: rgb(41, 193, 41);
+      background-color:black;
     }
     
     
@@ -140,21 +139,18 @@ body {
       height: 170px;
       font-size: 16px;
       border-radius: 10px;
-      margin: 20px;
+      margin: 15px;
       margin-right: 20px;
-      color: rgb(43, 42, 42);
+      color: rgb(19, 13, 13);
       cursor: pointer;
       text-align: left;
       padding-left: 15px;
       padding-top: 10px;
       background-color: white;
-      box-shadow: 5px 3px 3px 3px rgb(241, 238, 238),
-                  0 3px 3px 4px rgb(238, 236, 236),
-                  0 0px 0px 0px rgb(236, 234, 234);
       animation: nav 1s 1;
       transition: transform 0.2s ease-in-out;
       position: relative;
-      padding: 20px;
+      padding: 10px;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -205,30 +201,34 @@ body {
     .product > div  > h1 {
       text-align: right;
       font-size: 22px;
-      color: rgb(109, 113, 200);
+      color: rgb(10, 11, 21);
     }
     
     
     .product > div  > p {
       font-size: 30px;
       font-weight: bold;
-      color: chartreuse;
+      color: green;
       margin-bottom: 0px;
       text-align: right;
-      text-shadow: 0 3px 10px rgb(43, 42, 42)
-                   0 0 2px rgb(43, 42, 42)
-                   0 0 1px rgb(43, 42, 42);
       margin-top: 0px;
     } 
     
     
-    .product > div  > img {
-      position: absolute;
-      width: 95px;
-      height: 120px;
-      margin-top: 20px;
-      left: 20px;
+    .product  > img {
+      width: 25%;
+      height: 50%;
     }
+
+    .product > div { 
+      margin: 0px;
+      padding: 0px;
+      display: flex;
+      flex-direction: column;
+      /* align-items: center; */
+      justify-content: center;
+    }
+
     
     
     select {
@@ -237,7 +237,7 @@ body {
         text-align: center;
         border-style: none;
         border-radius: 5px;
-        background-color: grey;
+        background-color: green;
         color: white;
         width: 130px;
         height: 40px;
@@ -256,8 +256,8 @@ body {
         text-align: center;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 60px;
-        color: white;
-        text-shadow: 0 0 2px rgb(123, 121, 121);
+        color: rgb(19, 16, 16);
+        /* text-shadow: 0 0 2px rgb(123, 121, 121); */
         animation: glow 2s ease-in-out infinite;
       }
       
@@ -332,7 +332,7 @@ body {
     
     #div_sort {
       display:flex;
-      justify-content:space-between;
+      justify-content: space-between;
       flex-direction: column;
       margin-top: 5px;
       border-bottom: 2px solid rgb(129, 124, 124);
@@ -343,6 +343,8 @@ body {
     #div_sort > div{
       display: flex;
       justify-content: space-around;
+      margin: 0px;
+      width: 300px;
     }
     
     
@@ -401,17 +403,20 @@ body {
     
     
     .btn:hover {
-      transform: scale(1.110);
-    }
+      background-color: #388E3C; /* ירוק כהה יותר בעת ריחוף */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* הוספת צל יפה */
+      transition: transform 0.2s ease-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
     
     
     #buyNow {
       height: 35px;
-      width: 45%;
-      margin-right: 15px;
-      background-color: rgb(41, 193, 41);
+      width: 90%;
+      /* margin-right: 15px; */
+      background-color: rgb(9, 11, 9);
       margin: auto;
       margin-top: 5px;
+      margin-bottom: 5px;
     }
     
     
@@ -438,9 +443,6 @@ body {
       padding-left: 15px;
       padding-top: 10px;
       background-color: white;
-      box-shadow: 5px 6px 3px 3px rgb(241, 238, 238),
-                  0 6px 6px 4px rgb(238, 236, 236),
-                  0 6px 3px 4px rgb(236, 234, 234);
       animation: nav 1s 1;
       transition: transform 0.2s ease-in-out;
       position: relative;
@@ -486,30 +488,24 @@ body {
     }
     
     
-    .product:hover {
-      transform: scale(1.11);
-    }
     
-    
-    .product > div >h1 {
+    .product > div > h1 {
       text-align: right;
       font-size: 25px;
-      color: rgb(109, 113, 200);
+      color: rgb(4, 4, 7);
     }
     
     .product  > img {
-      display: none;
+      width: 25%;
+      height: 50%;
     }
     
-    .product > div > p {
+    .product > div  > p {
       font-size: 20px;
       font-weight: bold;
-      color: rgb(255, 0, 21);
+      color: green(255, 0, 21);
       margin-bottom: 0px;
       text-align: right;
-      text-shadow: 0 3px 10px rgb(43, 42, 42)
-                   0 0 2px rgb(43, 42, 42)
-                   0 0 1px rgb(43, 42, 42);
     } 
     
     
@@ -534,12 +530,11 @@ body {
         height: 28px;
         cursor: pointer;
         margin-right: 10px;
+        direction: rtl;
+        background-color: #388E3C;
     }
     
     
-    select:hover {
-      background-color: rgb(139, 137, 137);
-    }
     
     
     #title {

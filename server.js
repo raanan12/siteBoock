@@ -791,7 +791,7 @@ const createManger = async () =>{
 
 
 const constantFunction = () => {
-    cron.schedule('10 12 * * 1', async () => {
+    cron.schedule('10 12 * * 5', async () => {
         let res = await collectionPending.deleteMany({})
         let manger = await collectionMenger.find()
         if(manger[0].orderConstant.length > 0){
