@@ -49,7 +49,7 @@ const newDiv = (name, arr, orderNumber) => {
   })
   p2.innerHTML = `מספר הזמנה: ${orderNumber}`
   p1.innerHTML = `שם מזמין: ${name}`
-  p.innerHTML = `מספר ספרים: ${arr.length}`
+  p.innerHTML = `מספר מוצרים: ${arr.length}`
   div.append(p2, p1, p);
   div.setAttribute('class', 'orders');
   document.getElementById('OrderList').append(div)
