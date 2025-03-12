@@ -53,7 +53,8 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
     let p = document.createElement('p');
     let img = document.createElement('img');
     let btn = document.createElement('button');
-    let update = document.createElement('button')
+    let update = document.createElement('button');
+    let divText = document.createElement('div');
     btn.setAttribute('id','delete')
     btn.innerHTML = 'delete'
     update.innerHTML = 'update'
@@ -117,9 +118,10 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
     // The function removes the product from the product array
     // that the user has selected.
     h1.innerHTML = name
-    p.innerHTML = `Price: ${price}`
+    p.innerHTML = `מחיר: ${price}`
     img.src = imgUrl
-    div.append( h1, p,img);
+    divText.append(h1,p)
+    div.append(divText,img);
     div.setAttribute('class', 'product');
     document.getElementById('OrderList').append(div)
   }
