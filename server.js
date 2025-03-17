@@ -314,15 +314,17 @@ app.post('/update', (req, res) => {
     let price = req.body.productPrice;
     let changeValue = req.body.changeValue;
     let update = req.body.updateInpt;
+    let classCh = req.body.classTypeCh;
+    console.log(classCh);
     const updateProduct = async () => {
         if (changeValue == 'name') {
-            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productName: update } })
+            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productName: update ,class:classCh} })
         }
         else if (changeValue == 'price') {
-            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productPrice: Number(update) } })
+            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productPrice: Number(update),class:classCh } })
         }
         else {
-            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productImg: update } })
+            await collectionProduct.findOneAndUpdate({ productName: name1, productPrice: price }, { $set: { productImg: update,class:classCh } })
         }
         let arr = await collectionProduct.find()
         res.json(arr)

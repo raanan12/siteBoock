@@ -18,7 +18,7 @@ const remove =(obj)=>{
   
       })
       ArrProducts.forEach((val) => {
-        newDiv(val.productName, val.productPrice, val.productImg)
+        newDiv(val.productName, val.productPrice, val.productImg,val.scool,val.class)
       });
   
       fetch('/deletProduct', {
@@ -59,11 +59,50 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
     btn.innerHTML = 'delete'
     update.innerHTML = 'update'
     img.setAttribute('id','imgProduct')
+    
 
     div.addEventListener('click', () => {
-
         document.getElementById('clientName').innerHTML = `${name}`
+        console.log(class2);
 
+
+
+        if(class2 == 'מיצים'){
+          const select = document.getElementById("byClass");
+          if(select.options.length == 3){
+            select.remove(0); 
+          }
+          else{
+            select.options[1].text ='לחמי פיינגולד'
+            select.options[1].value ='לחמי פיינגולד'
+            select.options[0].text = 'מיצים'
+            select.options[0].value = 'מיצים'
+          }
+          
+        }
+
+        else if(class2 == 'לחמי פיינגולד'){
+          console.log('ok');
+          
+          let select = document.getElementById("byClass");
+
+          if(select.options.length == 3){
+            select.remove(0); 
+            select.options[0].text ='לחמי פיינגולד'
+            select.options[0].value ='לחמי פיינגולד'
+            select.options[1].text = 'מיצים'
+            select.options[1].value = 'מיצים'
+          }
+          else{
+            select.options[0].text ='לחמי פיינגולד'
+            select.options[0].value ='לחמי פיינגולד'
+            select.options[1].text = 'מיצים'
+            select.options[1].value = 'מיצים'
+          }
+        }
+
+        document.getElementById('updateInpt').value = name
+        
         document.getElementById('totalPaid').innerHTML = ` ₪ ${price}`
         document.getElementById('delete').innerHTML =''
         document.getElementById('delete').append(btn)
@@ -79,13 +118,16 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
         })
         document.getElementById('update').innerHTML =''
         document.getElementById('update').append(update)
+
+
         update.addEventListener('click',()=>{
           obj ={
             productName:name,
-            productPrice:price
+            productPrice:price,
           }
           let changeValue = document.getElementById('selectUpdate').value;
           let updateInpt = document.getElementById('updateInpt').value;
+          let classTypeCh = document.getElementById('byClass').value;          
 
           fetch('/update', {
             headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
@@ -93,8 +135,9 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
             body: JSON.stringify({
               productName: obj.productName,
               productPrice : obj.productPrice,
+              classTypeCh,
               changeValue,
-              updateInpt
+              updateInpt,
             })
           })
           .then(res => res.json())
@@ -102,7 +145,7 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
             ArrProducts = data
             document.getElementById('OrderList').innerHTML = ''
             ArrProducts.forEach((val) => {
-              newDiv(val.productName, val.productPrice, val.productImg)
+              newDiv(val.productName, val.productPrice, val.productImg,val.scool,val.class)
             })
           })
           .catch((err)=>{
@@ -138,7 +181,7 @@ fetch('/getAllProducts')
     // server and enters each product into a new div, which generates
     // a div for each product itself.
     // document.getElementById('userName').innerHTML = sessionStorage.getItem('user')
-    ArrProducts.forEach((val) => {
+    ArrProducts.forEach((val) => {      
       newDiv(val.productName, val.productPrice, val.productImg,val.scool,val.class)
     })
   })
