@@ -296,11 +296,20 @@ const back = () =>{
 // and saves it on the browser in Local Storage which moves the user 
 // to the purchase page.
 const buy = () => {
-  if(chosenProducts.length != 0){
+  
+  let checkNumber = false 
+  chosenProducts.forEach((val)=>{
+    if(val.cunt2 >= 2){
+      checkNumber = true
+    }
+  })
+
+
+  if(chosenProducts.length > 2 || checkNumber == true){
     location.href = '/signup';
   }
   else{
-    alert('לא נבחרו מוצרים')
+    alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים')
   }
   
 }

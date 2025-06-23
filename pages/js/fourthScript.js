@@ -83,7 +83,7 @@ const back = () => {
 // The function displays the entire order, it enters the Username
 // and also the total amount of products.
 const PresentingOrder = () => {
-  totulPrice1 = 15
+  totulPrice1 = 0
   chosenProducts.forEach((val)=>{
     let num = val.productPrice * val.cunt2
     totulPrice1 = totulPrice1+num
