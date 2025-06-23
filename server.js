@@ -31,7 +31,6 @@ const userSchema = db.Schema({
     userName: String,
     userEmail: String,
     userFone: String
-
 })
 
 
@@ -50,7 +49,8 @@ const ordersPending = db.Schema({
     userName: String,
     userFon: String,
     arrProducts: Array,
-    totulPrice:Number
+    totulPrice:Number,
+    adress:String
 })
 
 const manger = db.Schema({
@@ -212,8 +212,10 @@ app.post('/approve123', (req, res) => {
         userName: req.body.userName,
         userFon: req.body.userFon,
         arrProducts: req.body.arrProducts,
-        totulPrice:req.body.totulPrice
+        totulPrice:req.body.totulPrice,
+        adress:req.body.adress
     }
+
     temp.arrProducts.forEach(async (val) => {
         let pro = await collectionProduct.findOne({ productName: val.productName })
         if (pro.type == false) {
@@ -225,6 +227,7 @@ app.post('/approve123', (req, res) => {
             );
         }
     })
+
     const addOrder = async () => {
         await collectionPending.insertMany(temp)
         res.send({ result: true })
@@ -364,10 +367,12 @@ app.get('/pendingXL', async (req, res) => {
     const workBook = new ExcelJS.Workbook()
     const worksheet = workBook.addWorksheet()
     worksheet.views = [{ rightToLeft: true }];
-    let arrToFile = [['שם פרטי','פאלפון','כמות']]
+    let arrToFile = [['שם פרטי','פאלפון','כמות','כתובת']]
 
     arrPending.forEach((val) => {
-        arrToFile.push([val.userName,val.userFon])
+        console.log(val);
+        
+        arrToFile.push([val.userName,val.userFon,"",val.adress])
         val.arrProducts.forEach((val)=>{
             arrToFile.push([val.productName,'',val.cunt2])
         })

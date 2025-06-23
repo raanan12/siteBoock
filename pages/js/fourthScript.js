@@ -3,6 +3,9 @@
 let chosenProducts = JSON.parse(localStorage.getItem('chosenProducts'));
 let name1 = localStorage.getItem('user')
 let userFon = localStorage.getItem('fon')
+let adress = localStorage.getItem('adress')
+
+
 let totulPrice1 = 15
 
 // A function that produces the divs of the selected products.
@@ -61,8 +64,7 @@ const newDiv = (name, price, imgUrl,class5,scool,cunt2,index1) => {
     scoolNew = 'בנים'
   }
 
-  p.innerHTML = `מחיר : ${price} כמות : ${cunt2} כיתה : ${class5} `
-  p1.innerHTML = ` בית ספר :${scoolNew} `
+  p.innerHTML = `מחיר : ${price} כמות : ${cunt2} `
   div.append( h1, p,imgDelete,p1);
   div.setAttribute('class', 'product');
   document.getElementById('totalProducts').append(div)
@@ -74,7 +76,7 @@ const newDiv = (name, price, imgUrl,class5,scool,cunt2,index1) => {
 // if it returns True the user will be transferred to the home page and then discinnected from the system.
 
 const back = () => {
-  location.href = '/products'
+  location.href = '/'
 }
 
 
@@ -93,6 +95,8 @@ const PresentingOrder = () => {
   document.getElementById('clientName').innerHTML = name1;
   document.getElementById('totalPrice').innerHTML = `₪ ${totulPrice1}`;
   document.getElementById('numProducts').innerHTML = chosenProducts.length
+  document.getElementById('adress').innerHTML = adress
+
 }
 
 PresentingOrder()
@@ -115,7 +119,8 @@ const approve = () => {
             userName: name1,
             userFon,
             arrProducts: chosenProducts,
-            totulPrice:totulPrice1
+            totulPrice:totulPrice1,
+            adress
     
           })
         })

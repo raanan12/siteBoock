@@ -157,7 +157,7 @@ const openSaleF = async ()=>{
           // forEach loop that goes throuh the array of products recieved from the
           // server and enters each product into a new div, which generates
           // a div for each product itself.
-          document.getElementById('userName').innerHTML = localStorage.getItem('user')
+
           ArrProducts = ArrProducts.map((val)=>{
             if(val.type == false && val.amount < 1){
       
@@ -244,8 +244,9 @@ const byClass = () =>{
     let arr = []
     
     ArrProducts.forEach((val,index) => {
+      console.log(class3);
+      
         try{
-
           if(val.class == class3){
             arr.push([val,index])
             console.log('ok');
@@ -296,10 +297,10 @@ const back = () =>{
 // to the purchase page.
 const buy = () => {
   if(chosenProducts.length != 0){
-    location.href = '/buy';
+    location.href = '/signup';
   }
   else{
-    alert('לא נבחרו ספרים')
+    alert('לא נבחרו מוצרים')
   }
   
 }
