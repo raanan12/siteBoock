@@ -305,7 +305,7 @@ const buy = () => {
   })
 
 
-  if(chosenProducts.length > 2 || checkNumber == true){
+  if(chosenProducts.length >= 2 || checkNumber == true){
     location.href = '/buy';
   }
   else{

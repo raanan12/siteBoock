@@ -141,6 +141,10 @@ const approve = () => {
       document.getElementById('approve').disabled = false
 
     }
+    else if(document.getElementById('checkbox').checked == false){
+      alert('לא אושר תשלום')
+      document.getElementById('approve').disabled = false
+    }
     else {
       userConnected = {
         userFamayl,
@@ -167,7 +171,7 @@ const approve = () => {
           headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
           method: 'post',
           body: JSON.stringify({
-            userName: userFamayl + '' + userNameInput,
+            userName: userFamayl + ' ' + userNameInput,
             userFon : userFone,
             arrProducts: chosenProducts,
             totulPrice: totulPrice1,
@@ -182,6 +186,8 @@ const approve = () => {
             if (data.result == true) {
               localStorage.setItem('user','not connected')
               localStorage.setItem('idOrder',data.id)
+              let chosenProducts = [];
+              localStorage.setItem('chosenProducts', JSON.stringify(chosenProducts));
               alert('תודה שקנית ההזמנה הקניה  התקבלה במערכת ')
               location.href = '/summary'
             }
