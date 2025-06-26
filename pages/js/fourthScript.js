@@ -155,7 +155,7 @@ const approve = () => {
           headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
           method: 'post',
           body: JSON.stringify({
-            userName: userEmail + '' + userNameInput,
+            userName: userFamayl + '' + userNameInput,
             userFon : userFone,
             arrProducts: chosenProducts,
             totulPrice: totulPrice1,
