@@ -143,9 +143,8 @@ const approve = () => {
       localStorage.setItem('user', userFamayl + " " + userNameInput)
       localStorage.setItem('adress',adress)
 
-
-  
-    }
+      console.log('ok');
+      
 
     if(chosenProducts.length != 0){ 
         localStorage.setItem('tiutlPric',totulPrice1)
@@ -186,6 +185,9 @@ const approve = () => {
     else{
       alert('לא נבחרו ספרים')
     }
+    }
+
+    
   
   
 
