@@ -265,8 +265,12 @@ app.get('/Order', (req, res) => {
 // delte order
 app.delete('/deletOrder', (req, res) => {
     const delete1 = async () => {
-        await collectionPending.findOneAndDelete({ userName: req.body.userName, arrProducts: req.body.arrProducts })
-        res.json('the order delte')
+        const order = await collectionPending.findByIdAndDelete(req.body.id)
+        if (order) {
+            res.json('ההזמנה נמחקה בהצלחה')
+        } else {
+            res.status(404).json('הזמנה לא נמצאה')
+        }
     }
 
     delete1()

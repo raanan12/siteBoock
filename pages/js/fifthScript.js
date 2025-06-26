@@ -7,7 +7,7 @@ const dayOfWeek = today.getDay();
 
 
 // Function that produce new Divs for order of products.
-const newDiv = (name, arr, orderNumber) => {
+const newDiv = (name, arr, orderNumber,id) => {
   let div = document.createElement('div');
   let p2 = document.createElement('p');
   let p1 = document.createElement('p');
@@ -22,17 +22,19 @@ const newDiv = (name, arr, orderNumber) => {
     let obj = {
       userName: name,
       arrProducts: arr,
+      id
     }
     document.getElementById('clientName').innerHTML = `${name}`
     document.getElementById('ProductsOrder').innerHTML = ''
     let price = 0
     arr.forEach((val) => {
+      
       let p = document.createElement('p');
       p.style.borderBottomColor = 'black'
       p.style.borderBottomStyle = 'solid'
       p.style.borderBottomWidth = '1'
       p.style.display = 'block'
-      p.innerHTML = val.productName
+      p.innerHTML = val.productName +' , ' + ' ' + ' ' + ' כמות : ' + val.cunt2
       document.getElementById('ProductsOrder').append(p)
       price += val.productPrice;
       console.log(val.productName);
@@ -59,11 +61,12 @@ const newDiv = (name, arr, orderNumber) => {
 const remove =(obj)=>{
   let userName = obj.userName;
   let arrProducts = obj.arrProducts;
+  let id = obj.id
   console.log(userName);
   document.getElementById('OrderList').innerHTML = ''
     let boolean = false
     ArrOrders = ArrOrders.filter((val) => {
-      if (boolean == false && userName== val.userName && val.arrProducts == arrProducts) {
+      if (boolean == false && userName == val.userName && val.arrProducts == arrProducts && val._id == id ) {
         boolean = true
       }
       else {
@@ -80,7 +83,8 @@ const remove =(obj)=>{
       method: 'delete',
       body: JSON.stringify({
         userName,
-        arrProducts
+        arrProducts,
+        id
       })
     })
 
@@ -105,8 +109,9 @@ fetch('/Order')
   .then(res => res.json())
   .then((data) => {
     ArrOrders = data.result
-    ArrOrders.forEach((val,index) => {
-      newDiv(val.userName, val.arrProducts, ++index)
+    ArrOrders.forEach((val,index) => {  
+      let id = val._id
+      newDiv(val.userName, val.arrProducts, ++index, id)
     });
   })
   .catch((err) => {
