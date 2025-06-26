@@ -99,3 +99,16 @@ select {
 img {
   display: none;
 }
+
+.checkbox2{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  align-items: start;
+  flex-direction: row;
+  border: #146a14 solid 2px;
+}
+
+#tacnon{
+  width: 90% ;
+}

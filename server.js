@@ -10,6 +10,16 @@ const http = require('http');
 const workbook = require('excel4node/distribution/lib/workbook');
 const path = require('path');
 const cron = require('node-cron');
+const PDFDocument = require('pdfkit');
+const cors = require('cors');
+app.use(cors());
+
+function fixText(text) {
+    if (!text) return '';
+    return Buffer.from(text, 'utf8').toString();
+  }
+  
+
 
 
 
@@ -212,28 +222,35 @@ app.post('/approve123', (req, res) => {
         userName: req.body.userName,
         userFon: req.body.userFon,
         arrProducts: req.body.arrProducts,
-        totulPrice:req.body.totulPrice,
-        adress:req.body.adress
-    }
-
+        totulPrice: req.body.totulPrice,
+        adress: req.body.adress
+    };
+    
+    // עדכון כמות המוצרים במחסן לפי סוג
     temp.arrProducts.forEach(async (val) => {
-        let pro = await collectionProduct.findOne({ productName: val.productName })
+        let pro = await collectionProduct.findOne({ productName: val.productName });
         if (pro.type == false) {
-            let num = pro.amount
-            --num
+            let num = pro.amount;
+            --num;
             await collectionProduct.findOneAndUpdate(
                 { productName: val.productName },
                 { $set: { amount: num } }
             );
         }
-    })
-
+    });
+    
     const addOrder = async () => {
-        await collectionPending.insertMany(temp)
-        res.send({ result: true })
-    }
-
-    addOrder()
+        try {
+            // שמירת ההזמנה במסד ומחזיר את האובייקט המלא שנוצר
+            const savedDoc = await collectionPending.create(temp);
+            res.send({ result: true, id: savedDoc._id });
+        } catch (err) {
+            console.error('שגיאה בשמירה למסד:', err);
+            res.status(500).send({ result: false, error: err.message });
+        }
+    };
+    
+    addOrder();
 })
 
 // Returns an array of all orders
@@ -525,228 +542,107 @@ app.get('/allpadingXl', async (req, res) => {
 
 })
 
-app.post('/myPading', async (req,res)=>{
-    const workbook = new ExcelJS.Workbook();
-    const arrPending = await collectionPending.find({userFon: req.body.fon});
-    let sum = 1;
-    arrPending.forEach((val) => {
-        const worksheet = workbook.addWorksheet(`Sheet${sum}`);
-        // הגדרת כיוון הטבלה כמימין לשמאל
-        worksheet.views = [{ rightToLeft: true }];
-        
-        let arrToFile = [];
-        arrToFile.push([':שם', val.userName], [' פאלפון :', val.userFon], ['', 'רשימת ספרים', 'כמות']);
-        let totalPrice = val.totulPrice;
-        let class1 = [[],[],[],[],[],[],[],[]]
-        let arrScoolB = val.arrProducts.filter((val)=>val.scool == 'boys') 
-        arrToFile.push(['בנים'])
-        arrScoolB.forEach((val)=>{
-            if(val.class == 'א') class1[0].push(val)
-            else if (val.class == 'ב') class1[1].push(val)
-            else if (val.class == 'ג') class1[2].push(val)
-            else if (val.class == 'ד') class1[3].push(val)
-            else if (val.class == 'ה') class1[4].push(val)
-            else if (val.class == 'ו') class1[5].push(val)
-            else if (val.class == 'ז') class1[6].push(val)
-            else if (val.class == 'ח') class1[7].push(val)
-        })
-        let arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-        let sum1 = 0
-        class1 = class1.map((val)=>{
-            val = val.sort((a,b)=>a.index-b.index)
-            let val2 = val.map((value)=>{
-                return ["",value.productName,value.cunt2]
-            })
-            val2.unshift(arr4[sum1])
-            sum1++
-            return val2
-        })
-        class1.forEach((val)=>{
-            if(val.length>1){
-                val.forEach((val)=>{
-                    arrToFile.push(val)
-                })
-            }
-        })
 
-        
-
-        class1 = [[],[],[],[],[],[],[],[]]
-        arrScoolB = val.arrProducts.filter((val)=>val.scool == 'girls') 
-        arrToFile.push(['בנות'])
-        arrScoolB.forEach((val)=>{
-            if(val.class == 'א') class1[0].push(val)
-            else if (val.class == 'ב') class1[1].push(val)
-            else if (val.class == 'ג') class1[2].push(val)
-            else if (val.class == 'ד') class1[3].push(val)
-            else if (val.class == 'ה') class1[4].push(val)
-            else if (val.class == 'ו') class1[5].push(val)
-            else if (val.class == 'ז') class1[6].push(val)
-            else if (val.class == 'ח') class1[7].push(val)
-        })
-        arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-        sum1 = 0
-        class1 = class1.map((val)=>{
-            val = val.sort((a,b)=>a.index-b.index)
-            let val2 = val.map((value)=>{
-                return ["",value.productName,value.cunt2]
-            })
-            val2.unshift(arr4[sum1])
-            sum1++
-            return val2
-        })
-        class1.forEach((val)=>{
-            if(val.length>1){
-                val.forEach((val)=>{
-                    arrToFile.push(val)
-                })
-            }
-        })
-        arrToFile.push(['מחיר סופי:', totalPrice]);
-
-        arrToFile.forEach((row) => {
-            worksheet.addRow(row);
-        });
-
-        // עיצוב התיבות בקוץ
-        let arr2 = ['A1', 'A2', `A${val.arrProducts.length + 3}`, 'B3', 'C3']
-        arr2.forEach((val) => {
-            const box = worksheet.getCell(val);
-
-            // עיצוב התיבה
-            box.border = {
-                bottom: { style: 'thick' },
-            };
-
-            // צבע הגבולות
-            box.border.color = 'black'
-        })
-        let box = worksheet.getCell('B2')
-        box.font = {
-            size: 9, // גודל הטקסט בפיקסלים
-        };
-
-
-        sum++;
-    });
-
-    const buffer = await workbook.xlsx.writeBuffer();
-
-    res.setHeader('Content-Disposition', 'attachment; filename=pendingUser.xlsx');
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.send(buffer);
-})
-
-
-app.post('/myPading', async (req, res) => {
+app.post('/myPadingPDF', async (req, res) => {
     try {
-        const workbook = new ExcelJS.Workbook();
-        const arrPending = await collectionPending.find({ userFon: req.body.fon }).toArray();
-        
-        let sum = 1;
-        arrPending.forEach((val) => {
-            const worksheet = workbook.addWorksheet(`Sheet${sum}`);
-            worksheet.views = [{ rightToLeft: true }];
-            
-            let arrToFile = [];
-            arrToFile.push([':שם', val.userName], [' פאלפון :', val.userFon], ['', 'רשימת ספרים', 'כמות']);
-            let totalPrice = val.totulPrice;
+      console.log('📥 קיבלתי בקשה ל-PDF עם fon:', req.body.fon);
+  
+      // שליפת ההזמנה לפי מספר הטלפון
+      const order = await collectionPending.findById(req.body.fon);
 
-            let class1 = [[],[],[],[],[],[],[],[]];
-            let arrScoolB = val.arrProducts.filter((val) => val.scool == 'boys');
-            arrToFile.push(['בנים']);
-
-            arrScoolB.forEach((val) => {
-                if (val.class == 'א') class1[0].push(val);
-                else if (val.class == 'ב') class1[1].push(val);
-                else if (val.class == 'ג') class1[2].push(val);
-                else if (val.class == 'ד') class1[3].push(val);
-                else if (val.class == 'ה') class1[4].push(val);
-                else if (val.class == 'ו') class1[5].push(val);
-                else if (val.class == 'ז') class1[6].push(val);
-                else if (val.class == 'ח') class1[7].push(val);
-            });
-
-            let arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']];
-            let sum1 = 0;
-            class1 = class1.map((val) => {
-                val = val.sort((a, b) => a.index - b.index);
-                let val2 = val.map((value) => {
-                    return ["", value.productName, value.cunt2];
-                });
-                val2.unshift(arr4[sum1]);
-                sum1++;
-                return val2;
-            });
-
-            class1.forEach((val) => {
-                if (val.length > 1) {
-                    val.forEach((val) => {
-                        arrToFile.push(val);
-                    });
-                }
-            });
-
-            class1 = [[],[],[],[],[],[],[],[]];
-            arrScoolB = val.arrProducts.filter((val) => val.scool == 'girls');
-            arrToFile.push(['בנות']);
-            arrScoolB.forEach((val) => {
-                if (val.class == 'א') class1[0].push(val);
-                else if (val.class == 'ב') class1[1].push(val);
-                else if (val.class == 'ג') class1[2].push(val);
-                else if (val.class == 'ד') class1[3].push(val);
-                else if (val.class == 'ה') class1[4].push(val);
-                else if (val.class == 'ו') class1[5].push(val);
-                else if (val.class == 'ז') class1[6].push(val);
-                else if (val.class == 'ח') class1[7].push(val);
-            });
-
-            arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']];
-            sum1 = 0;
-            class1 = class1.map((val) => {
-                val = val.sort((a, b) => a.index - b.index);
-                let val2 = val.map((value) => {
-                    return ["", value.productName, value.cunt2];
-                });
-                val2.unshift(arr4[sum1]);
-                sum1++;
-                return val2;
-            });
-
-            class1.forEach((val) => {
-                if (val.length > 1) {
-                    val.forEach((val) => {
-                        arrToFile.push(val);
-                    });
-                }
-            });
-            arrToFile.push(['מחיר סופי:', totalPrice]);
-
-            arrToFile.forEach((row) => {
-                worksheet.addRow(row);
-            });
-
-            let arr2 = ['A1', 'A2', `A${val.arrProducts.length + 3}`, 'B3', 'C3'];
-            arr2.forEach((val) => {
-                const box = worksheet.getCell(val);
-                box.border = { bottom: { style: 'thick' } };
-                box.border.color = 'black';
-            });
-            let box = worksheet.getCell('B2');
-            box.font = { size: 9 };
-
-            sum++;
+      console.log('arrPending (נתונים):', JSON.stringify(order, null, 2));
+  
+      if (!order) {
+        console.log('❌ לא נמצאו נתונים ל-fon הזה');
+        return res.status(404).json({ message: 'לא נמצאו נתונים.' });
+      }
+  
+      // יצירת מסמך PDF
+      const doc = new PDFDocument({ margin: 50, size: 'A4', layout: 'portrait' });
+  
+      // רישום פונט עברי
+      doc.registerFont('hebrewFont', path.join(__dirname, 'Alef-Regular.ttf'));
+  
+      // אגירת תוכן הקובץ
+      const buffers = [];
+      doc.on('data', buffers.push.bind(buffers));
+      doc.on('end', () => {
+        const pdfData = Buffer.concat(buffers);
+        res.setHeader('Content-Disposition', 'attachment; filename=pendingUser.pdf');
+        res.setHeader('Content-Type', 'application/pdf');
+        res.send(pdfData);
+      });
+  
+      // הגדרות כלליות
+      doc.font('hebrewFont').fontSize(16);
+  
+      // פרטי משתמש
+      doc.text(`${order.userName} ${':'} ${'שם '}  `, { align: 'right', rtl: true });
+      doc.text(`${order.userFon} ${':'} ${'פאלפון '} `, { align: 'right', rtl: true });
+      if (order.adress) {
+        doc.text(` ${order.adress} ${':'} ${'כתובת'}`, { align: 'right', rtl: true });
+      }
+      doc.moveDown();
+  
+      // כותרת טבלה
+      doc.fontSize(14).text('רשימת מוצרים:', { align: 'right', rtl: true });
+      doc.moveDown(0.5);
+  
+      const startY = doc.y;
+      const tablePadding = 10;
+      const rowHeight = 25;
+  
+      // כותרת הטבלה
+      doc.rect(50, startY, 500, rowHeight).fillAndStroke('#eeeeee', 'black');
+      doc.fillColor('black').fontSize(13).text(` ${'המוצר'} ${' שם'}` , 330, startY + 7, {
+        rtl: true,
+        width: 200,
+        align: 'right',
+      });
+      doc.text('כמות', 100, startY + 7, {
+        rtl: true,
+        width: 100,
+        align: 'right',
+      });
+  
+      doc.moveDown();
+  
+      // שורות המוצרים
+      order.arrProducts?.sort((a, b) => a.index - b.index).forEach((product, i) => {
+        const y = startY + rowHeight * (i + 1);
+        doc.rect(50, y, 500, rowHeight).stroke();
+        doc.fontSize(12).text(product.productName, 330, y + 7, {
+          rtl: true,
+          width: 200,
+          align: 'right',
         });
+        doc.text(product.cunt2?.toString() || '0', 100, y + 7, {
+          rtl: true,
+          width: 100,
+          align: 'right',
+        });
+      });
+  
+      // מחיר סופי
+      const finalY = startY + rowHeight * (order.arrProducts?.length + 2);
+      doc.moveTo(50, finalY).moveDown();
+      doc.text(`₪ ${order.totulPrice} ${':'}  ${'סופי'} ${'מחיר '} `, { align: 'right', rtl: true });
 
-        const buffer = await workbook.xlsx.writeBuffer();
-        res.setHeader('Content-Disposition', 'attachment; filename=pending.xlsx');
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.send(buffer);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error generating file');
+  
+      doc.end();
+    } catch (error) {
+      console.error('שגיאה ביצירת PDF:', error);
+      res.status(500).send('שגיאה ביצירת הקובץ.');
     }
-});
+  });
+  
+  
+  
+
+
+
+
+
 
 app.get('/getManger', async (req,res) =>{
     let manger = await collectionMenger.find()

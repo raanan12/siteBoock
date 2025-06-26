@@ -1,9 +1,6 @@
 // Receiving an array of products and the user name from the
 // Local Storage and also from the Session Storage.
 let chosenProducts = JSON.parse(localStorage.getItem('chosenProducts'));
-let name1 = localStorage.getItem('user')
-let userFon = localStorage.getItem('fon')
-let adress = localStorage.getItem('adress')
 
 
 let totulPrice1 = 15
@@ -91,11 +88,12 @@ const PresentingOrder = () => {
   chosenProducts.forEach((val,index) => {
     newDiv(val.productName, val.productPrice, val.productImg,val.class,val.scool ,val.cunt2,index)
   });
-  document.getElementById('userName').innerHTML = localStorage.getItem('user')
-  document.getElementById('clientName').innerHTML = name1;
-  document.getElementById('totalPrice').innerHTML = `₪ ${totulPrice1}`;
-  document.getElementById('numProducts').innerHTML = chosenProducts.length
-  document.getElementById('adress').innerHTML = adress
+
+  console.log(totulPrice1);
+  
+
+  document.getElementById('totalPrice').innerHTML = ` ${totulPrice1}₪`;
+
 
 }
 
@@ -107,19 +105,60 @@ const approve = () => {
   catch{
     
   }
-  if(name1 != 'not connected' && name1 != null && userFon != null && name1 != ''){
+    
+    let userFamayl = document.getElementById('famayl').value;
+    let userNameInput = document.getElementById('nameUser').value;
+    let userEmail = document.getElementById('emailUser').value;
+    let userFone = document.getElementById('foneUser').value;
+    let adress = document.getElementById('adress').value;
 
-    if(chosenProducts.length != 0){
-      if(document.getElementById('checkbox').checked){
+
+    if(userFamayl.length <2){
+      alert('לא הוכנס שם משפחה')
+    }
+    if (userNameInput.length < 2) {
+      alert('לא הוכנס שם פרטי')
+    }
+    else if (userEmail.indexOf('@') == -1) {
+      alert('מייל לא תקין')
+    }
+    else if (userFone.length != 10) {
+      alert('מספר פאלפון לא תקין ')
+    }
+    else if(adress.length < 10){
+      alert('הכתובת לא חוקית')
+    }
+    else {
+      userConnected = {
+        userFamayl,
+        userNameInput,
+        userEmail,
+        userFone,
+        adress
+      }
+
+     
+      localStorage.setItem('user', userConnected)
+      localStorage.setItem('fon',userFone )
+      localStorage.setItem('user', userFamayl + " " + userNameInput)
+      localStorage.setItem('adress',adress)
+
+
+  
+    }
+
+    if(chosenProducts.length != 0){ 
         localStorage.setItem('tiutlPric',totulPrice1)
+        console.log('ppp');
+        
         fetch('/approve123', {
           headers: { "Accept": 'application/json', 'Content-Type': 'application/json' },
           method: 'post',
           body: JSON.stringify({
-            userName: name1,
-            userFon,
+            userName: userEmail + '' + userNameInput,
+            userFon : userFone,
             arrProducts: chosenProducts,
-            totulPrice:totulPrice1,
+            totulPrice: totulPrice1,
             adress
     
           })
@@ -130,6 +169,7 @@ const approve = () => {
 
             if (data.result == true) {
               localStorage.setItem('user','not connected')
+              localStorage.setItem('idOrder',data.result.id)
               alert('תודה שקנית ההזמנה הקניה  התקבלה במערכת ')
               location.href = '/summary'
             }
@@ -142,17 +182,16 @@ const approve = () => {
             console.log(err);
           })
         
-      }
-      else{
-        alert('לא אושר תשלום')
-      }
     }
     else{
       alert('לא נבחרו ספרים')
     }
-  }
-  else{
-    alert('אינך מחובר למערכת ')
-  }
+  
+  
+
+
+    
+
+
   
 }

@@ -12,21 +12,23 @@
 <body>
   <div id="header">
     <h1 id="title">סחוט טבעי</h1>
-    <div>
-    <img src="../images/pngegg1.png" alt="">
-    <p id="userName"></p>
-    </div>
   </div> 
   <div id="main">
 
     <div class="div_main">
       <h1 class="title">סיכום הזמנה </h1>
-      <p>שם הקונה: <span id="clientName"></span></p>
+      <p id="priceText">מחיר  : <span id="totalPrice"></span> </p>
+      <p>שם פרטי</p>
+      <input type="text" id="nameUser" dir="rtl" placeholder="שם פרטי">
+      <p>שם משפחה</p>
+      <input dir="rtl" id="famayl" type="text" placeholder="שם משפחה" minlength="2" required>
+      <p>מייל</p>
+      <input dir="rtl" id="emailUser" type="email" placeholder="Email" required>
+      <p>פלאפון</p>
+      <input dir="rtl" id="foneUser" type="tel" placeholder="פלאפון" minlength="10" maxlength="10" required>
+      <p>כותבת</p>
+      <input dir="rtl" id="adress" type="text" placeholder="כתובת"  required>
       <!-- <p style="color: red;">עמלת אריזה 15 ש"ח </p> -->
-      <p>מחיר סופי : <span id="totalPrice"></span> </p>
-      <p>כמות מוצרים הכללית  : <span id="numProducts"></span></p>
-      <p>כתובת:  <span id="adress"> </span></p>
-      <br>
       <p dir="rtl" id="text"> <span style="font-weight: bold; font-size: 18px;">אין הזמנה ללא אישור תשלום</span> 
         <br>
         דרכי תשלום
@@ -48,7 +50,6 @@
     </div>
 
     <div  id="totalProducts">
-      <p id="titleProducts">ספרים</p>
     </div>
 
   </div>

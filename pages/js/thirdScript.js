@@ -306,7 +306,7 @@ const buy = () => {
 
 
   if(chosenProducts.length > 2 || checkNumber == true){
-    location.href = '/signup';
+    location.href = '/buy';
   }
   else{
     alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים')

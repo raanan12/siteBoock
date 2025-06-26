@@ -5,21 +5,20 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../css/summaryPageStyl.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/fourthStyle.css'>
     <link rel="stylesheet" href="secondStyle.css">
 </head>
 <body>
     <div id="header">
-        <h1>אור ספרים</h1>
+        <h1>סחוט טבעי</h1>
     </div>
-    <div class="main2">
-        <div>
-            <h1>תודה שקנית אצלנו</h1>
-            <p>טופס הזמנה</p>
-            <p>סה"כ : <span id="tutal"></span></p>
-            <button onclick="XL()">לשמירת עותק של ההזמנה (מומלץ)  </button>
+    <div class="main2" style="display: flex; justify-content: center; align-items: center; height: 500px; border: 2px solid black;">
+        <div tyle="display: flex; align-items: center; width:400px; height:400px; ">
+            <h1 style="font-size: 60px; width: 100%; text-align: center; ">תודה שקנית אצלנו !</h1>
+            <p style="font-size: 30px; ">סה"כ : <span id="tutal"></span></p>
+            <p style="font-size: 30px;">כתובת <span id="adtess"></span></p>
+            <button onclick="XL()"  id="approve" class="btn"  style="background: rgb(60, 202, 60); width: 230px;">לשמירת עותק ההזמנה  </button>
         </div>
-        <img src="../images/Lovepik_com-401338322-a-stack-of-books.png" alt="">
         
     </div>
     <script src='../js/sumaaryScript.js'></script>
