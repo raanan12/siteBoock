@@ -3,7 +3,9 @@ let adress = localStorage.getItem('adress')
 document.getElementById('tutal').innerHTML = tutal
 document.getElementById('adtess').innerHTML = adress
 
-let userFon = localStorage.getItem('id')
+let userFon = localStorage.getItem('idOrder')
+console.log(userFon);
+
 
 const XL = () =>{
   fetch('/myPadingPDF', {

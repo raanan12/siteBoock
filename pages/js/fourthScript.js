@@ -169,7 +169,7 @@ const approve = () => {
 
             if (data.result == true) {
               localStorage.setItem('user','not connected')
-              localStorage.setItem('idOrder',data.result.id)
+              localStorage.setItem('idOrder',data.id)
               alert('תודה שקנית ההזמנה הקניה  התקבלה במערכת ')
               location.href = '/summary'
             }
