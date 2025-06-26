@@ -99,6 +99,9 @@ const PresentingOrder = () => {
 
 PresentingOrder()
 const approve = () => {
+
+  console.log('ok');
+  
   try{
     document.getElementById('approve').disabled = true
   }
@@ -115,18 +118,28 @@ const approve = () => {
 
     if(userFamayl.length <2){
       alert('לא הוכנס שם משפחה')
+      document.getElementById('approve').disabled = false
+
     }
-    if (userNameInput.length < 2) {
+    else if (userNameInput.length < 2) {
       alert('לא הוכנס שם פרטי')
+      document.getElementById('approve').disabled = false
+
     }
     else if (userEmail.indexOf('@') == -1) {
       alert('מייל לא תקין')
+      document.getElementById('approve').disabled = false
+
     }
     else if (userFone.length != 10) {
       alert('מספר פאלפון לא תקין ')
+      document.getElementById('approve').disabled = false
+
     }
     else if(adress.length < 10){
       alert('הכתובת לא חוקית')
+      document.getElementById('approve').disabled = false
+
     }
     else {
       userConnected = {
@@ -184,6 +197,7 @@ const approve = () => {
     }
     else{
       alert('לא נבחרו ספרים')
+      document.getElementById('approve').disabled = false
     }
     }
 
