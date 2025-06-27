@@ -31,8 +31,14 @@ app.use(bodyParser.json())
 
 
 // Connect to MongoDb
-db.connect('mongodb+srv://ranan97531:2524097531R@cluster0.rhkco4m.mongodb.net/mosheFruits')
+db.connect('mongodb+srv://ranan97531:2524097531R@cluster0.rhkco4m.mongodb.net/mosheFruits', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
     .then(() => console.log('db on'))
+
+
+
 
 
 // Define database schemas and models
