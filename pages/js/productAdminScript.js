@@ -65,41 +65,46 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
         document.getElementById('clientName').innerHTML = `${name}`
         console.log(class2);
 
+        const selectElement = document.getElementById('selectUpdate');
+
+        selectElement.addEventListener('change', function () {
+                const selectedValue = selectElement.value;
+
+                if(selectedValue == 'name'){
+                  document.getElementById('updateInpt').value = name;
+                }
+                else if(selectedValue == 'price'){
+                  document.getElementById('updateInpt').value = price;
+                }
+                else if(selectedValue == 'img'){
+                  document.getElementById('updateInpt').value = imgUrl;
+                }
+                console.log('נבחר הערך:', selectedValue);
+
+              });
+
+  function handleSelectChange(value) {
+    // כאן תכתוב מה שצריך שיקרה
+    console.log('הפונקציה פועלת עם הערך:', value);
+  }
 
 
-        if(class2 == 'מיצים'){
-          const select = document.getElementById("byClass");
-          if(select.options.length == 3){
-            select.remove(0); 
-          }
-          else{
-            select.options[1].text ='לחמי פיינגולד'
-            select.options[1].value ='לחמי פיינגולד'
-            select.options[0].text = 'מיצים'
-            select.options[0].value = 'מיצים'
-          }
-          
-        }
+        // עדכון תפריט בחירת סוג המוצר לפי סוג המוצר העדכני
+        const select = document.getElementById('byClass');
+        select.value = class2;
 
-        else if(class2 == 'לחמי פיינגולד'){
-          console.log('ok');
-          
-          let select = document.getElementById("byClass");
+        // אם אתה רוצה גם להפעיל אירוע שינוי (change)
+        const event = new Event('change');
+        select.dispatchEvent(event);
 
-          if(select.options.length == 3){
-            select.remove(0); 
-            select.options[0].text ='לחמי פיינגולד'
-            select.options[0].value ='לחמי פיינגולד'
-            select.options[1].text = 'מיצים'
-            select.options[1].value = 'מיצים'
-          }
-          else{
-            select.options[0].text ='לחמי פיינגולד'
-            select.options[0].value ='לחמי פיינגולד'
-            select.options[1].text = 'מיצים'
-            select.options[1].value = 'מיצים'
-          }
-        }
+
+       // עדכון תפריט בחירת סוג המוצר לפי סוג המוצר העדכני
+        const selectUpdate = document.getElementById('selectUpdate');
+        selectUpdate.value = 'name';
+
+        // אם אתה רוצה גם להפעיל אירוע שינוי (change)
+        const eventUpdate = new Event('change');
+        select.dispatchEvent(event);
 
         document.getElementById('updateInpt').value = name
         
@@ -147,6 +152,7 @@ const newDiv = (name, price, imgUrl,scool,class2) => {
             ArrProducts.forEach((val) => {
               newDiv(val.productName, val.productPrice, val.productImg,val.scool,val.class)
             })
+            alert('המוצר התעדכן בהצלחה')
           })
           .catch((err)=>{
             console.log(err);

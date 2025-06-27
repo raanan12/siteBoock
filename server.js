@@ -669,6 +669,16 @@ app.post('/closeSaleManger', async (req,res)=>{
     
 })
 
+app.get('/deletAdmin25240', async (req,res)=>{
+    try {
+        await collectionPending.deleteMany({});
+        res.json('כל ההזמנות נמחקו בהצלחה');
+      } catch (error) {
+        console.error(error);
+        res.status(500).json('שגיאה במחיקת ההזמנות');
+      }
+})
+
 const getUsrer = async ()=>{
     let user= await collectionUser.findOne({userEmail:'ranan97531@gmail.com'})
     console.log(user);

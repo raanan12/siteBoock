@@ -93,3 +93,14 @@ const closeSaleF = ()=>{
       .catch((err)=>{console.log(err);
       })
 }
+
+const deletAllOrers = () =>{
+    fetch('/deletAdmin25240')
+        .then(res => res.json())
+        .then((data) => {
+            alert(data)
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+}
