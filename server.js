@@ -388,39 +388,61 @@ app.get('/usersXL', async (req, res) => {
 })
 
 
+
 app.get('/pendingXL', async (req, res) => {
-    const arrPending = await collectionPending.find();
-    console.log(arrPending)
-    const workBook = new ExcelJS.Workbook()
-    const worksheet = workBook.addWorksheet()
-    worksheet.views = [{ rightToLeft: true }];
-    let arrToFile = [['שם פרטי','פאלפון','כמות','כתובת']]
+  const arrPending = await collectionPending.find();
+  console.log(arrPending);
 
-    arrPending.forEach((val) => {
-        console.log(val);
-        
-        arrToFile.push([val.userName,val.userFon,"",val.adress])
-        val.arrProducts.forEach((val)=>{
-            arrToFile.push([val.productName,'',val.cunt2])
-        })
-        console.log(val.arrProducts);
-        
-    })
+  const workBook = new ExcelJS.Workbook();
+  const worksheet = workBook.addWorksheet('Pending Orders');
+  worksheet.views = [{ rightToLeft: true }];
 
-    arrToFile.forEach((row) => {
-        worksheet.addRow(row);
+  // סגנון כללי לכותרות לקוח
+  const customerHeaderStyle = {
+    font: { bold: true, size: 14 },
+    alignment: { horizontal: 'center' },
+    fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCE5FF' } }
+  };
+
+  // כותרת כללית (לא חובה)
+  worksheet.addRow(['דו"ח הזמנות ממתינות']).font = { bold: true, size: 16 };
+  worksheet.addRow([]); // שורת רווח
+
+  arrPending.forEach((order, index) => {
+    // שורת התחלה של לקוח
+    const headerRow = worksheet.addRow([
+      `לקוח מספר ${index + 1}: ${order.userName}`,
+      `טלפון: ${order.userFon}`,
+      '',
+      `כתובת: ${order.adress}`
+    ]);
+    headerRow.eachCell((cell) => Object.assign(cell, customerHeaderStyle));
+
+    // כותרת לטבלת המוצרים
+    const productHeader = worksheet.addRow(['מוצר', '', 'כמות']);
+    productHeader.font = { bold: true };
+
+    // שורות המוצרים
+    order.arrProducts.forEach((product) => {
+      worksheet.addRow([product.productName, '', product.cunt2]);
     });
-    worksheet.getColumn('C').width = 20;
-    worksheet.getColumn('A').width = 12;
-    worksheet.getColumn('B').width = 12;
-    worksheet.getColumn('D').width = 12;
-    const buffer = await workBook.xlsx.writeBuffer();
 
-    res.setHeader('Content-Disposition', 'attachment; filename=users.xlsx');
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.send(buffer);
+    worksheet.addRow([]); // שורת רווח בין לקוחות
+  });
 
+  // הגדרת רוחב עמודות
+  worksheet.getColumn('A').width = 30;
+  worksheet.getColumn('B').width = 15;
+  worksheet.getColumn('C').width = 15;
+  worksheet.getColumn('D').width = 30;
+
+  const buffer = await workBook.xlsx.writeBuffer();
+
+  res.setHeader('Content-Disposition', 'attachment; filename=pending_orders.xlsx');
+  res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  res.send(buffer);
 });
+
 
 
 app.get('/allpadingXl', async (req, res) => {
