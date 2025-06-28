@@ -304,13 +304,24 @@ const buy = () => {
     }
   })
 
-
-  if(chosenProducts.length >= 2 || checkNumber == true){
-    location.href = '/buy';
+  console.log(chosenProducts.length);
+  if(chosenProducts.length == 0){
+    if(chosenProducts.length >= 2 || checkNumber == true){
+      location.href = '/buy';
+    }
+    else{
+      alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים')
+    }
   }
   else{
-    alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים')
+    if(chosenProducts.length >= 2 || checkNumber == true || chosenProducts[0].productName.includes("באנדל")){
+      location.href = '/buy';
+    }
+    else{
+      alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים')
+    }
   }
+  
   
 }
 
