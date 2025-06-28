@@ -13,6 +13,7 @@ const newDiv = (name, price, imgUrl,class5,scool,cunt2,index1) => {
   let br = document.getElementById('br')
   let p1 = document.createElement('p')
   let imgDelete = document.createElement('button');
+  let img =  document.createElement('img');
 
 
   // The function removes the product from the product array
@@ -61,8 +62,11 @@ const newDiv = (name, price, imgUrl,class5,scool,cunt2,index1) => {
     scoolNew = 'בנים'
   }
 
+  img.src = imgUrl
+  img.style.width = '40px'
+  img.style.height = '40px'
   p.innerHTML = `מחיר : ${price} כמות : ${cunt2} `
-  div.append( h1, p,imgDelete,p1);
+  div.append( h1, p,imgDelete,p1,img);
   div.setAttribute('class', 'product');
   document.getElementById('totalProducts').append(div)
 }
@@ -202,8 +206,7 @@ const approve = () => {
         
     }
     else{
-      alert('לא נבחרו ספרים')
-      document.getElementById('approve').disabled = false
+      location.href = '/'
     }
     }
 
