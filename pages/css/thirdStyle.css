@@ -288,6 +288,7 @@ body {
   }
   
   @media (max-width:750px) {
+
     #back{
       height: 35px;
       width: 45%;
@@ -301,6 +302,7 @@ body {
       font-size: 16px;
       font-weight: bold;
     }
+
     #search{
       display: flex;
       align-items: center;
@@ -309,6 +311,7 @@ body {
       border-color: rgb(81, 81, 81);
       animation: inpt 1s 1;
     }
+
     img{
       margin:7px;
       height: 25px;
@@ -370,11 +373,11 @@ body {
       width: 70px;
       height: 60px;
     }
+
     #header > div:first-child > img{
       width: 50px;
       height: 50px;
     }
-    
     
     input {
       border: none;
@@ -427,6 +430,7 @@ body {
         align-items: center;
         justify-content: center;
         width: 90%;
+
     }
     
     
