@@ -66,7 +66,8 @@ const ordersPending = db.Schema({
     userFon: String,
     arrProducts: Array,
     totulPrice:Number,
-    adress:String
+    adress:String,
+    comments:String
 })
 
 const manger = db.Schema({
@@ -229,7 +230,8 @@ app.post('/approve123', (req, res) => {
         userFon: req.body.userFon,
         arrProducts: req.body.arrProducts,
         totulPrice: req.body.totulPrice,
-        adress: req.body.adress
+        adress: req.body.adress,
+        comments: req.body.comments
     };
     
     // עדכון כמות המוצרים במחסן לפי סוג
@@ -412,9 +414,10 @@ app.get('/pendingXL', async (req, res) => {
     // שורת התחלה של לקוח
     const headerRow = worksheet.addRow([
       `לקוח מספר ${index + 1}: ${order.userName}`,
-      `טלפון: ${order.userFon}`,
+      `פאלפון : ${order.userFon}`,
       '',
-      `כתובת: ${order.adress}`
+      `כתובת: ${order.adress}`,
+      `הערות: ${order.comments}`
     ]);
     headerRow.eachCell((cell) => Object.assign(cell, customerHeaderStyle));
 
@@ -435,6 +438,7 @@ app.get('/pendingXL', async (req, res) => {
   worksheet.getColumn('B').width = 15;
   worksheet.getColumn('C').width = 15;
   worksheet.getColumn('D').width = 30;
+  worksheet.getColumn('E').width = 40;
 
   const buffer = await workBook.xlsx.writeBuffer();
 
@@ -446,133 +450,46 @@ app.get('/pendingXL', async (req, res) => {
 
 
 app.get('/allpadingXl', async (req, res) => {
+    const ExcelJS = require('exceljs');
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(`Sheet1`);
-    const arrPending = await collectionPending.find();
     worksheet.views = [{ rightToLeft: true }];
-    let arrToFile = [['רשימת ספרים', 'כמות']];
-    let arrNew = []
-    let arrBooc = []
-    let arrScool = []
-    let totulPrice1 =0
-    // בניית מערך של כל הספרים מכל ההזמנות
-    arrPending.forEach((val)=>{
-        totulPrice1 = totulPrice1 + val.totulPrice
-        arrBooc = [...arrBooc,...val.arrProducts]
-    })
 
-    arrBooc.forEach((val)=>{
+    worksheet.columns = [
+        { header: 'שם מוצר', key: 'productName', width: 40 },
+        { header: 'כמות כוללת', key: 'cunt2', width: 15 }
+    ];
 
-    })
-    // בנית מערך רק של הספרים של הבנים
+    const arrPending = await collectionPending.find();
+    let allProducts = [];
 
-    arrScool =  arrBooc.filter((val)=>val.scool == 'boys')
+    arrPending.forEach((val) => {
+        allProducts = [...allProducts, ...val.arrProducts];
+    });
 
-    arrScool.forEach((val)=>{
-        let boolian = false
-        arrNew.forEach((value,index)=>{
-            if(val.class == value.class && val.scool == value.scool && val.productName == value.productName){
-                arrNew[index].cunt2 = arrNew[index].cunt2 + val.cunt2
-                boolian = true
-            }
-        })
-        if(boolian == false){
-            arrNew.push(val)
-        } 
-    })
+    const mergedProducts = [];
 
-    // סידור המערך של הבנים לפי כיתות
-    let class1 = [[],[],[],[],[],[],[],[]]
-    arrToFile.push(['בנים'])
-    arrNew.forEach((val)=>{
-        if(val.class == 'א') class1[0].push(val)
-        else if (val.class == 'ב') class1[1].push(val)
-        else if (val.class == 'ג') class1[2].push(val)
-        else if (val.class == 'ד') class1[3].push(val)
-        else if (val.class == 'ה') class1[4].push(val)
-        else if (val.class == 'ו') class1[5].push(val)
-        else if (val.class == 'ז') class1[6].push(val)
-        else if (val.class == 'ח') class1[7].push(val)
-    })
-    let arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-    let sum1 = 0
-    class1 = class1.map((val)=>{
-        val = val.sort((a,b)=>a.index-b.index)
-        let val2 = val.map((value)=>{
-            return ["",value.productName,value.cunt2]
-        })
-        val2.unshift(arr4[sum1])
-        sum1++
-        return val2
-    })
-
-    // הכנסה של כל מערכי הכיתותת לתוך המערך הכללי של הקובץ
-    class1.forEach((val)=>{
-        if(val.length>1){
-            val.forEach((val)=>{
-                arrToFile.push(val)
-            })
+    allProducts.forEach((product) => {
+        const existing = mergedProducts.find(p => p.productName === product.productName);
+        if (existing) {
+            existing.cunt2 += product.cunt2;
+        } else {
+            mergedProducts.push({
+                productName: product.productName,
+                cunt2: product.cunt2
+            });
         }
-    })
-    
-    arrScool = arrBooc.filter((val)=>val.scool == 'girls') 
+    });
 
-    arrNew = []
-    arrScool.forEach((val)=>{
-        let boolian = false
-        arrNew.forEach((value,index)=>{
-            if(val.class == value.class && val.scool == value.scool && val.productName == value.productName){
-                arrNew[index].cunt2 = arrNew[index].cunt2 + val.cunt2
-                boolian = true
-            }
-        })
-        if(boolian == false){
-            arrNew.push(val)
-        } 
-    })
-
-    class1 = [[],[],[],[],[],[],[],[]]
-        arrToFile.push(['בנות'])
-        arrNew.forEach((val)=>{
-            if(val.class == 'א') class1[0].push(val)
-            else if (val.class == 'ב') class1[1].push(val)
-            else if (val.class == 'ג') class1[2].push(val)
-            else if (val.class == 'ד') class1[3].push(val)
-            else if (val.class == 'ה') class1[4].push(val)
-            else if (val.class == 'ו') class1[5].push(val)
-            else if (val.class == 'ז') class1[6].push(val)
-            else if (val.class == 'ח') class1[7].push(val)
-        })
-        arr4 = [['כיתה א'],['כיתה ב'],['כיתה ג'],['כיתה ד'],['כיתה ה'],['כיתה ו'],['כיתה ז'],['כיתה ח']]
-        sum1 = 0
-        class1 = class1.map((val)=>{
-            val = val.sort((a,b)=>a.index-b.index)
-            let val2 = val.map((value)=>{
-                return ["",value.productName,value.cunt2]
-            })
-            val2.unshift(arr4[sum1])
-            sum1++
-            return val2
-        })
-        class1.forEach((val)=>{
-            if(val.length>1){
-                val.forEach((val)=>{
-                    arrToFile.push(val)
-                })
-            }
-        })
-    arrToFile.push(['סך הכל :',totulPrice1])
-    arrToFile.forEach((row) => {
-        worksheet.addRow(row);
+    mergedProducts.forEach((product) => {
+        worksheet.addRow({ productName: product.productName, cunt2: product.cunt2 });
     });
 
     const buffer = await workbook.xlsx.writeBuffer();
-
-    res.setHeader('Content-Disposition', 'attachment; filename=pending.xlsx');
+    res.setHeader('Content-Disposition', 'attachment; filename=all-products.xlsx');
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.send(buffer);
-
-})
+});
 
 
 app.post('/myPadingPDF', async (req, res) => {

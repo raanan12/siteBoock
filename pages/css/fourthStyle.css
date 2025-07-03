@@ -30,7 +30,7 @@ body{
 /* עיצוב כללי לשדות קלט ו-select */
 input, select {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #2e7d32;
   border-radius: 8px;
   background: #e8f5e9;

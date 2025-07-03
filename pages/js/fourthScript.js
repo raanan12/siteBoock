@@ -115,9 +115,9 @@ const approve = () => {
     
     let userFamayl = document.getElementById('famayl').value;
     let userNameInput = document.getElementById('nameUser').value;
-    let userEmail = document.getElementById('emailUser').value;
     let userFone = document.getElementById('foneUser').value;
     let adress = document.getElementById('adress').value;
+    let comments = document.getElementById('comments').value;
 
 
     if(userFamayl.length <2){
@@ -127,11 +127,6 @@ const approve = () => {
     }
     else if (userNameInput.length < 2) {
       alert('לא הוכנס שם פרטי')
-      document.getElementById('approve').disabled = false
-
-    }
-    else if (userEmail.indexOf('@') == -1) {
-      alert('מייל לא תקין')
       document.getElementById('approve').disabled = false
 
     }
@@ -153,7 +148,6 @@ const approve = () => {
       userConnected = {
         userFamayl,
         userNameInput,
-        userEmail,
         userFone,
         adress
       }
@@ -179,7 +173,8 @@ const approve = () => {
             userFon : userFone,
             arrProducts: chosenProducts,
             totulPrice: totulPrice1,
-            adress
+            adress,
+            comments
     
           })
         })
