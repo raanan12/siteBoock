@@ -26,6 +26,9 @@ body{
     justify-content: space-around;
     margin-bottom: 20px;
   }
+
+
+
 /* שדות קלט */
 /* עיצוב כללי לשדות קלט ו-select */
 input, select {
@@ -61,6 +64,10 @@ input:focus, select:focus {
   
   @media (min-width:750px) {
     #titleProducts{
+      display: none;
+    }
+
+    .btn_3{
       display: none;
     }
     
@@ -290,6 +297,29 @@ input:focus, select:focus {
   }
   
   @media (max-width:750px) {
+
+
+    .btn_3{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  
+    .btnPuy{
+      height: 70%;
+      width: 40%;
+      margin: 3px;
+      text-align: center;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+    }
+
+    .btnPuy:hover {
+      transform: scale(1.10);
+    }
 
   .div_main {
       padding: 15px;

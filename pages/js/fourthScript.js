@@ -34,6 +34,7 @@ const newDiv = (name, price, imgUrl,class5,scool,cunt2,index1) => {
       if(obj.productName == val.productName && obj.class === val.class && obj.scool === val.scool){
         if(val.cunt2 !=1){
           chosenProducts[ind].cunt2 = chosenProducts[index1].cunt2-1
+          localStorage.setItem('chosenProducts', JSON.stringify(chosenProducts));
         }
         else{
           chosenProducts = chosenProducts.filter((val)=>obj.productName != val.productName || obj.class != val.class || obj.scool != val.scool)
