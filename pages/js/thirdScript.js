@@ -250,13 +250,19 @@ const buy = () => {
     }
   });
 
+  // if (chosenProducts.length == 0) {
+  //   alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים');
+  // } else {
+  // if (chosenProducts.length >= 2 || checkNumber || chosenProducts[0].productName.includes("באנדל")) {
+  //     location.href = '/buy';
+  //   } else {
+  //     alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים');
+  //   }
+  // }
+
   if (chosenProducts.length == 0) {
-    alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים');
-  } else {
-    if (chosenProducts.length >= 2 || checkNumber || chosenProducts[0].productName.includes("באנדל")) {
-      location.href = '/buy';
-    } else {
-      alert(' (מינימום הזמנה 2 מוצרים) לא נבחרו מספיק מוצרים');
-    }
+    alert('לא נבחרו מספיק מוצרים');
+  } else if(chosenProducts.length > 0 ) {
+    location.href = '/buy';
   }
 };
