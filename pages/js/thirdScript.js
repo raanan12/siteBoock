@@ -260,6 +260,7 @@ const buy = () => {
   //   }
   // }
 
+ 
   if (chosenProducts.length == 0) {
     alert('לא נבחרו מספיק מוצרים');
   } else if(chosenProducts.length > 0 ) {
