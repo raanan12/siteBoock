@@ -136,7 +136,7 @@ const approve = () => {
       document.getElementById('approve').disabled = false
 
     }
-    else if(adress.length < 10){
+    else if(adress.length < 2){
       alert('הכתובת לא חוקית')
       document.getElementById('approve').disabled = false
 
