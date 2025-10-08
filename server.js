@@ -652,21 +652,6 @@ const createManger = async () =>{
 }
 
 
-const constantFunction = () => {
-    cron.schedule('56 12 * * 1', async () => {
-        let res = await collectionPending.deleteMany({})
-        let manger = await collectionMenger.find()
-        if(manger[0].orderConstant.length > 0){
-            await collectionPending.insertMany(manger[0].orderConstant)
-        }
-        console.log(res);
-        
-    }, {
-        timezone: "Asia/Jerusalem" // קובע את הזמן לפי ישראל
-    });
-}
-
-constantFunction()
 
 
 
